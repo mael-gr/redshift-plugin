@@ -17,7 +17,7 @@ type RedshiftPlugin = Plugin<{
         dbPassword: string
         uploadSeconds: string
         uploadMegabytes: string
-        eventsNotToIgnore: string
+        eventsToIncludeIgnore: string
     }
 }>
 
@@ -108,8 +108,8 @@ export const setupPlugin: RedshiftPlugin['setupPlugin'] = async (meta) => {
 
     console.log('buffer created')
 
-    global.eventsNotToIgnore = new Set(
-        config.eventsNotToIgnore ? config.eventsNotToIgnore.split(',').map((event) => event.trim()) : null
+    global.eventsToInclude = new Set(
+        config.eventsToInclude ? config.eventsToInclude.split(',').map((event) => event.trim()) : null
     )
 }
     
@@ -118,7 +118,7 @@ export const setupPlugin: RedshiftPlugin['setupPlugin'] = async (meta) => {
 export async function onEvent(event: PluginEvent, { global }: RedshiftMeta) {
     
     
-    console.log('onEvent',   Array.from(global.eventsNotToIgnore.values()) )
+    console.log('onEvent',   Array.from(global.eventsToInclude.values()) )
     const {
         event: eventName,
         properties,
@@ -159,9 +159,9 @@ export async function onEvent(event: PluginEvent, { global }: RedshiftMeta) {
         site_url,
         timestamp: new Date(timestamp).toISOString(),
     }
-    console.log('test :', global.eventsNotToIgnore.has(eventName))
-    console.log(global.eventsNotToIgnore)
-    if (global.eventsNotToIgnore.has(eventName)) {
+    console.log('test :', global.eventsToInclude.has(eventName))
+    console.log(global.eventsToInclude)
+    if (global.eventsToInclude.has(eventName)) {
         console.log('event added to buffer')
         global.buffer.add(parsedEvent)
     }
