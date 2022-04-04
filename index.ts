@@ -6,7 +6,6 @@ type RedshiftPlugin = Plugin<{
     global: {
         pgClient: Client
         buffer: ReturnType<typeof createBuffer>
-        eventsToIgnore: Set<string>
         sanitizedTableName: string
     }
     config: {
@@ -18,7 +17,6 @@ type RedshiftPlugin = Plugin<{
         dbPassword: string
         uploadSeconds: string
         uploadMegabytes: string
-        eventsToIgnore: string
         eventsNotToIgnore: string
     }
 }>
@@ -109,9 +107,6 @@ export const setupPlugin: RedshiftPlugin['setupPlugin'] = async (meta) => {
     })
 
     console.log('buffer created')
-    global.eventsToIgnore = new Set(
-        config.eventsToIgnore ? config.eventsToIgnore.split(',').map((event) => event.trim()) : null
-    )
 
     global.eventsNotToIgnore = new Set(
         config.eventsNotToIgnore ? config.eventsNotToIgnore.split(',').map((event) => event.trim()) : null
