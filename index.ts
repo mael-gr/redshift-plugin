@@ -132,7 +132,8 @@ export async function onEvent(event: PluginEvent, { global }: RedshiftMeta) {
         uuid,
         ..._discard
     } = event
-
+    console.log('event_name :', eventName)
+    
     const ip = properties?.['$ip'] || event.ip
     const timestamp = event.timestamp || properties?.timestamp || now || sent_at
     let ingestedProperties = properties
