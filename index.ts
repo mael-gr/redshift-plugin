@@ -19,7 +19,7 @@ type RedshiftPlugin = Plugin<{
         uploadSeconds: string
         uploadMegabytes: string
         eventsToIgnore: string
-        eventNotToIgnore: string 
+        eventsNotToIgnore: string
     }
 }>
 
@@ -160,6 +160,7 @@ export async function onEvent(event: PluginEvent, { global }: RedshiftMeta) {
         timestamp: new Date(timestamp).toISOString(),
     }
     console.log('test :', global.eventsNotToIgnore.has(eventName))
+    console.log(global.eventsNotToIgnore)
     if (global.eventsNotToIgnore.has(eventName)) {
         console.log('event added to buffer')
         global.buffer.add(parsedEvent)
