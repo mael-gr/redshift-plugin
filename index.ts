@@ -157,7 +157,6 @@ export async function onEvent(event: PluginEvent, { global }: RedshiftMeta) {
         site_url,
         timestamp: new Date(timestamp).toISOString(),
     }
-    console.log(global.eventsToInclude)
     if (global.eventsToInclude.has(eventName)) {
         console.log('event added to buffer')
         global.buffer.add(parsedEvent)
