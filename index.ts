@@ -118,7 +118,6 @@ export const setupPlugin: RedshiftPlugin['setupPlugin'] = async (meta) => {
 export async function onEvent(event: PluginEvent, { global }: RedshiftMeta) {
     
     
-    console.log('onEvent',   Array.from(global.eventsToInclude.values()) )
     const {
         event: eventName,
         properties,
@@ -132,7 +131,6 @@ export async function onEvent(event: PluginEvent, { global }: RedshiftMeta) {
         uuid,
         ..._discard
     } = event
-    console.log('event_name :', eventName)
     
     const ip = properties?.['$ip'] || event.ip
     const timestamp = event.timestamp || properties?.timestamp || now || sent_at
@@ -159,7 +157,6 @@ export async function onEvent(event: PluginEvent, { global }: RedshiftMeta) {
         site_url,
         timestamp: new Date(timestamp).toISOString(),
     }
-    console.log('test :', global.eventsToInclude.has(eventName))
     console.log(global.eventsToInclude)
     if (global.eventsToInclude.has(eventName)) {
         console.log('event added to buffer')
