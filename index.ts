@@ -114,7 +114,7 @@ export const setupPlugin: RedshiftPlugin['setupPlugin'] = async (meta) => {
     )
 
     global.eventsNotToIgnore = new Set(
-        config.eventsNotToIgnore ? config.eventsToIgnore.split(',').map((event) => event.trim()) : null
+        config.eventsNotToIgnore ? config.eventsNotToIgnore.split(',').map((event) => event.trim()) : null
     )
 }
     
