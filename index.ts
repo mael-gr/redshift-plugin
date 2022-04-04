@@ -19,7 +19,7 @@ type RedshiftPlugin = Plugin<{
         uploadSeconds: string
         uploadMegabytes: string
         eventsToIgnore: string
-        eventNotToIgnore: string 
+        eventsNotToIgnore: string 
     }
 }>
 
@@ -114,9 +114,11 @@ export const setupPlugin: RedshiftPlugin['setupPlugin'] = async (meta) => {
     )
 
     global.eventsNotToIgnore = new Set(config.eventsNotToIgnore)
+    console.log('end of setupPlugin')
 }
 
 export async function onEvent(event: PluginEvent, { global }: RedshiftMeta) {
+    console.log('onEvent')
     const {
         event: eventName,
         properties,
@@ -158,11 +160,13 @@ export async function onEvent(event: PluginEvent, { global }: RedshiftMeta) {
     }
 
     if (global.eventsNotToIgnore.has(eventName)) {
+        console.log('event added to buffer')
         global.buffer.add(parsedEvent)
     }
 }
 
 export const insertBatchIntoRedshift = async (payload: UploadJobPayload, { global, jobs, config }: RedshiftMeta) => {
+    console.log('insertBatchIntoRedshifht Launched')
     let values: InsertQueryValue[] = []
     let valuesString = ''
 
