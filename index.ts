@@ -6,6 +6,7 @@ type RedshiftPlugin = Plugin<{
     global: {
         pgClient: Client
         buffer: ReturnType<typeof createBuffer>
+        eventsToIgnore: Set<string>
         sanitizedTableName: string
     }
     config: {
@@ -17,7 +18,8 @@ type RedshiftPlugin = Plugin<{
         dbPassword: string
         uploadSeconds: string
         uploadMegabytes: string
-        eventsToIncludeIgnore: string
+        eventsToIgnore: string
+        eventsNotToIgnore: string
     }
 }>
 
@@ -107,9 +109,12 @@ export const setupPlugin: RedshiftPlugin['setupPlugin'] = async (meta) => {
     })
 
     console.log('buffer created')
+    global.eventsToIgnore = new Set(
+        config.eventsToIgnore ? config.eventsToIgnore.split(',').map((event) => event.trim()) : null
+    )
 
-    global.eventsToInclude = new Set(
-        config.eventsToInclude ? config.eventsToInclude.split(',').map((event) => event.trim()) : null
+    global.eventsNotToIgnore = new Set(
+        config.eventsNotToIgnore ? config.eventsNotToIgnore.split(',').map((event) => event.trim()) : null
     )
 }
     
@@ -118,6 +123,7 @@ export const setupPlugin: RedshiftPlugin['setupPlugin'] = async (meta) => {
 export async function onEvent(event: PluginEvent, { global }: RedshiftMeta) {
     
     
+    console.log('onEvent',   Array.from(global.eventsNotToIgnore.values()) )
     const {
         event: eventName,
         properties,
@@ -131,6 +137,7 @@ export async function onEvent(event: PluginEvent, { global }: RedshiftMeta) {
         uuid,
         ..._discard
     } = event
+    console.log('event_name :', eventName)
     
     const ip = properties?.['$ip'] || event.ip
     const timestamp = event.timestamp || properties?.timestamp || now || sent_at
@@ -157,8 +164,9 @@ export async function onEvent(event: PluginEvent, { global }: RedshiftMeta) {
         site_url,
         timestamp: new Date(timestamp).toISOString(),
     }
-    console.log('test :', global.eventsToInclude.has(eventName))
-    if (global.eventsToInclude.has(eventName)) {
+    console.log('test :', global.eventsNotToIgnore.has(eventName))
+    console.log(global.eventsNotToIgnore)
+    if (global.eventsNotToIgnore.has(eventName)) {
         console.log('event added to buffer')
         global.buffer.add(parsedEvent)
     }
