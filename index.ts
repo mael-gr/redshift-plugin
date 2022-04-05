@@ -19,7 +19,6 @@ type RedshiftPlugin = Plugin<{
         uploadSeconds: string
         uploadMegabytes: string
         eventsToIgnore: string
-        eventsNotToIgnore: string
     }
 }>
 
@@ -113,17 +112,12 @@ export const setupPlugin: RedshiftPlugin['setupPlugin'] = async (meta) => {
         config.eventsToIgnore ? config.eventsToIgnore.split(',').map((event) => event.trim()) : null
     )
 
-    global.eventsNotToIgnore = new Set(
-        config.eventsNotToIgnore ? config.eventsNotToIgnore.split(',').map((event) => event.trim()) : null
-    )
 }
     
     
 
 export async function onEvent(event: PluginEvent, { global }: RedshiftMeta) {
     
-    
-    console.log('onEvent',   Array.from(global.eventsNotToIgnore.values()) )
     const {
         event: eventName,
         properties,
@@ -137,7 +131,7 @@ export async function onEvent(event: PluginEvent, { global }: RedshiftMeta) {
         uuid,
         ..._discard
     } = event
-    console.log('event_name :', eventName)
+
     
     const ip = properties?.['$ip'] || event.ip
     const timestamp = event.timestamp || properties?.timestamp || now || sent_at
@@ -164,10 +158,9 @@ export async function onEvent(event: PluginEvent, { global }: RedshiftMeta) {
         site_url,
         timestamp: new Date(timestamp).toISOString(),
     }
-    console.log('test :', global.eventsNotToIgnore.has(eventName))
-    console.log(global.eventsNotToIgnore)
-    if (global.eventsNotToIgnore.has(eventName)) {
-        console.log('event added to buffer')
+
+
+    if (!global.eventsToIgnore.has(eventName)) {
         global.buffer.add(parsedEvent)
     }
 }
