@@ -74,7 +74,7 @@
             "key": "eventsToIgnore",
             "name": "Events to ignore",
             "type": "string",
-            "default": ["$guide.published","$agent.stonly-view"],
+            "default": "$feature_flag_called",
             "hint": "Comma separated list of events to ignore"
         },
                 {
