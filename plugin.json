@@ -71,14 +71,14 @@
             "required": true
         },
         {
-            "key": "eventsNotToIgnore",
+            "key": "eventsToIgnore",
             "name": "Events to ignore",
             "type": "string",
             "default": "$feature_flag_called",
             "hint": "Comma separated list of events to ignore"
         },
                 {
-            "key": "eventsToIgnore",
+            "key": "eventsNotToIgnore",
             "name": "Events not to ignore",
             "type": "string",
             "default": ["$identify", "$pageview"],
