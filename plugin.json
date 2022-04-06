@@ -74,7 +74,7 @@
             "key": "eventsToIgnore",
             "name": "Events to ignore",
             "type": "string",
-            "default": "$feature_flag_called","$guide.published", "$agent.stonly-view", "$scrolled.step.enabled","$user.trial.expired","$org.guide.created"
+            "default": ["$feature_flag_called", "$guide.published", "$agent.stonly-view", "$scrolled.step.enabled", "$user.trial.expired", "$org.guide.created"]
             "hint": "Comma separated list of events to ignore"
         },
                 {
