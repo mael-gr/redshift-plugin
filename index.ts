@@ -161,7 +161,7 @@ export async function onEvent(event: PluginEvent, { global }: RedshiftMeta) {
         timestamp: new Date(timestamp).toISOString(),
     }
 
-    console.log('we are here'
+    console.log('we are here')
     /*if (!global.eventsToIgnore.has(eventName)) {
         global.buffer.add(parsedEvent)
     }*/
