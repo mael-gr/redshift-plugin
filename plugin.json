@@ -358,8 +358,7 @@
                          "$special-step-nps.views-10000",
                          "$view_results",
                          "$org.guide.pubished",
-                         "$billing.paywall-rightsManagement_giveMoreRights"]
-,
+                         "$billing.paywall-rightsManagement_giveMoreRights"],
             "hint": "Comma separated list of events to ignore"
         },
                 {
