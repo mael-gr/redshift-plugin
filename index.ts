@@ -161,10 +161,10 @@ export async function onEvent(event: PluginEvent, { global }: RedshiftMeta) {
         timestamp: new Date(timestamp).toISOString(),
     }
 
-
-    if (!global.eventsToIgnore.has(eventName)) {
+    console.log('we are here'
+    /*if (!global.eventsToIgnore.has(eventName)) {
         global.buffer.add(parsedEvent)
-    }
+    }*/
 }
 
 export const insertBatchIntoRedshift = async (payload: UploadJobPayload, { global, jobs, config }: RedshiftMeta) => {
